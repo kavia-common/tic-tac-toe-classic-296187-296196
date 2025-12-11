@@ -1,3 +1,43 @@
-<div class="container">
-  <h1>{{ title }}</h1>
+<div class="page">
+  <main class="game-container" role="main" aria-labelledby="game-title">
+    <header class="header">
+      <h1 id="game-title" class="title">{{ title }}</h1>
+      <p class="subtitle">Two-player local match</p>
+    </header>
+
+    <section class="board-section" aria-label="Tic Tac Toe board">
+      <div class="board" role="grid" aria-rowcount="3" aria-colcount="3">
+        <button
+          *ngFor="let cell of board; let i = index"
+          type="button"
+          class="cell"
+          [attr.data-filled]="!!cell"
+          [disabled]="!!cell || !!winner"
+          [attr.aria-label]="cellAriaLabel(i)"
+          role="gridcell"
+          tabindex="0"
+          (click)="handleMove(i)"
+          (keydown)="onCellKeydown($event, i)">
+          <span class="mark" [class.x-mark]="cell === 'X'" [class.o-mark]="cell === 'O'">
+            {{ cell || '' }}
+          </span>
+        </button>
+      </div>
+    </section>
+
+    <section class="status-section" aria-live="polite" aria-atomic="true">
+      <div class="status-chip" [class.status-win]="winner" [class.status-draw]="!winner && draw">
+        {{ statusText }}
+      </div>
+    </section>
+
+    <section class="controls">
+      <button type="button" class="restart-btn" (click)="reset()" aria-label="Restart game">
+        Restart Game
+      </button>
+    </section>
+  </main>
+  <footer class="footer" aria-hidden="true">
+    Built with Angular · Ocean Professional theme
+  </footer>
 </div>
